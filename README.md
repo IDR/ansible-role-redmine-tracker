@@ -21,16 +21,22 @@ Parameters
 - `redmine_tracker_gmail_enabled`: Fetch emails from a Gmail account, default `false`
 - `redmine_tracker_gmail_user`: Gmail user
 - `redmine_tracker_gmail_password`: Gmail password
-- `redmine_tracker_gmail_schedule`: Fetch emails from Gmail on this Cron schedule
 - `redmine_tracker_docker_data_volume`: Volume for redmine files
 
 
 Outputs
 -------
 This role sets the following variable which can be used in other tasks:
-- `redmine_internal_ip`: Internal IP of the Redmine container
+- `redmine_tracker_internal_ip`: Internal IP of the Redmine container
 
 These are intended for use when you don't want to expose the container ports using standard Docker port-forwarding (set `redmine_port: 0`).
+
+
+Docker image
+------------
+The [`docker/`](docker) directory contains the files used to build the default image used in this role.
+This directory is for reference only, the image is *not* built by this role.
+If you change it you must build, tag and push the image to a Docker registry yourself, then update the `redmine_tracker_image` role parameter.
 
 
 Example playbook

@@ -16,7 +16,9 @@ redmine_tracker_db_name: redmine
 redmine_tracker_gmail_enabled: false
 redmine_tracker_gmail_user: ""
 redmine_tracker_gmail_password: ""
-redmine_tracker_gmail_schedule: "*/5 * * * *"
+
+# Incoming emails not implemented
+# redmine_tracker_gmail_schedule: "*/5 * * * *"
 
 # Volume for redmine files
 redmine_tracker_docker_data_volume: redmine-data
