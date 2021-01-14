@@ -1,0 +1,4 @@
+---
+default:
+  email_delivery:
+    delivery_method: :smtp

@@ -1,0 +1,22 @@
+---
+# defaults file for redmine-tracker
+
+# Docker image (includes IDR customisations)
+redmine_tracker_image: "imagedata/idr-redmine-tracker:20180802"
+# Listen on this external port
+redmine_tracker_port: 3000
+
+# Database credentials
+redmine_tracker_db_host: localhost
+redmine_tracker_db_user: redmine
+redmine_tracker_db_password: redmine
+redmine_tracker_db_name: redmine
+
+# GMail credentials
+redmine_tracker_gmail_enabled: false
+redmine_tracker_gmail_user: ""
+redmine_tracker_gmail_password: ""
+redmine_tracker_gmail_schedule: "*/5 * * * *"
+
+# Volume for redmine files
+redmine_tracker_docker_data_volume: redmine-data

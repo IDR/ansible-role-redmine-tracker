@@ -1,0 +1,39 @@
+---
+- name: Prerequisites
+  hosts: all
+
+  roles:
+    - role: ome.docker
+    - role: ome.postgresql
+      postgresql_version: "12"
+      postgresql_server_auth:
+        - database: redmine
+          user: redmine
+          address: 0.0.0.0/0
+      postgresql_databases:
+        - name: redmine
+          owner: redmine
+      postgresql_users:
+        - user: redmine
+          password: redmine
+          databases:
+            - redmine
+      postgresql_server_listen: "'*'"
+
+
+# Install this role
+- hosts: all
+
+  pre_tasks:
+    - name: Workaround to get host IP inside docker
+      shell: hostname -I | cut -d' ' -f1
+      register: hostname_ip
+      check_mode: false
+      changed_when: false
+      tags:
+        # Ignore [306] Shells that use pipes should set the pipefail option
+        - skip_ansible_lint
+
+  roles:
+    - role: ansible-role-redmine-tracker
+      redmine_tracker_db_host: "{{ hostname_ip.stdout }}"

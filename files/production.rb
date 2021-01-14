@@ -1,0 +1,16 @@
+Rails.application.configure do
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger::INFO
+  config.eager_load = true
+end
+# https://stackoverflow.com/a/17312863/8062212
+ActionMailer::Base.smtp_settings = {
+  :enable_starttls_auto => true,
+  :address        => "smtp.gmail.com",
+  :port           =>  587,
+  :domain         => "smtp.gmail.com",
+  :authentication => :plain,
+  :user_name      => ENV['GMAIL_USERNAME'],
+  :password       => ENV['GMAIL_PASSWORD']
+}
+ActionMailer::Base.delivery_method = :smtp

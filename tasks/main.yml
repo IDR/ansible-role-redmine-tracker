@@ -1,0 +1,63 @@
+---
+# tasks file for redmine-tracker
+
+- name: redmine | create configuration directories
+  become: true
+  file:
+    path: /etc/redmine
+    state: directory
+
+- name: redmine | configuration files
+  become: true
+  copy:
+    dest: "/etc/redmine/{{ item }}"
+    force: true
+    src: "{{ item }}"
+  with_items:
+    - configuration.yml
+    - production.rb
+  register: _redmine_configuration
+
+- name: redmine | docker-python
+  become: true
+  yum:
+    name: docker-python
+    state: present
+
+- name: redmine | docker run
+  become: true
+  docker_container:
+    image: "{{ redmine_tracker_image }}"
+    name: redmine
+    env:
+      REDMINE_DB_POSTGRES: "{{ redmine_tracker_db_host }}"
+      POSTGRES_ENV_POSTGRES_USER: "{{ redmine_tracker_db_user }}"
+      POSTGRES_ENV_POSTGRES_PASSWORD: "{{ redmine_tracker_db_password }}"
+      POSTGRES_ENV_POSTGRES_DB: "{{ redmine_tracker_db_name }}"
+      GMAIL_USERNAME: "{{ redmine_tracker_gmail_user }}"
+      GMAIL_PASSWORD: "{{ redmine_tracker_gmail_password }}"
+      RAILS_ENV: production
+    published_ports: >-
+      {{ (redmine_tracker_port > 0) | ternary([(redmine_tracker_port | string) +
+         ':3000'], []) }}
+    recreate: "{{ _redmine_configuration.changed }}"
+    restart_policy: always
+    state: started
+    # user: The redmine image runs as root then drops to uid 999
+    volumes:
+      - /etc/redmine/configuration.yml:/usr/src/redmine/config/configuration.yml:ro
+      - /etc/redmine/production.rb:/usr/src/redmine/config/environments/production.rb:ro
+      - "{{ redmine_tracker_docker_data_volume }}:/usr/src/redmine/files"
+  register: _redmine_container
+
+- name: redmine | return container IP
+  set_fact:
+    # These default() are needed because the "X.container" property is the
+    # recommended way to access this information but Ansible 2.6 only has the
+    # deprecated "X.ansible_facts.docker_container" property
+    redmine_tracker_internal_ip: >-
+      {{
+        (_redmine_container.container | default(
+           _redmine_container.ansible_facts.docker_container)
+        ).NetworkSettings.IPAddress
+      }}
