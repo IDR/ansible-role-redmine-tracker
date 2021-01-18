@@ -42,6 +42,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: galaxy
-        uses: manics/action-ansible-galaxy-publish@main
+        uses: ome/action-ansible-galaxy-publish@main
         with:
           galaxy-api-key: ${{ secrets.GALAXY_API_KEY }}
