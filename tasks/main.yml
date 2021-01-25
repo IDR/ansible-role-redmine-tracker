@@ -24,11 +24,19 @@
     name: docker-python
     state: present
 
+- name: redmine | docker network
+  become: true
+  docker_network:
+    name: "{{ redmine_tracker_docker_network }}"
+    state: present
+
 - name: redmine | docker run
   become: true
   docker_container:
     image: "{{ redmine_tracker_image }}"
     name: redmine
+    networks:
+      - name: "{{ redmine_tracker_docker_network }}"
     env:
       REDMINE_DB_POSTGRES: "{{ redmine_tracker_db_host }}"
       POSTGRES_ENV_POSTGRES_USER: "{{ redmine_tracker_db_user }}"
