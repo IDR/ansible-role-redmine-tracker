@@ -1,7 +1,7 @@
 IDR submission ticketing system
 ===============================
 
-[![Build Status](https://github.com/IDR/ansible-role-redmine-tracker/workflows/Build/badge.svg)](https://github.com/IDR/ansible-role-redmine-tracker/actions)
+[![Build Status](https://github.com/IDR/ansible-role-redmine-tracker/workflows/Molecule/badge.svg)](https://github.com/IDR/ansible-role-redmine-tracker/actions)
 
 This is an email ticketing system for handling IDR data submissions.
 The primary aim is to manage multiple complex email threads concerning data submissions to the IDR.

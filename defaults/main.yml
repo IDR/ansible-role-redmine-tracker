@@ -22,3 +22,6 @@ redmine_tracker_gmail_password: ""
 
 # Volume for redmine files
 redmine_tracker_docker_data_volume: redmine-data
+
+# Docker network for redmine
+redmine_tracker_docker_network: redmine
